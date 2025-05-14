@@ -1,0 +1,886 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab560
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\fs26 \cf0 <!DOCTYPE html>\
+<html lang="it">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Chiara Pastoressa | Architettura e Interior Design</title>\
+    <script src="https://cdn.tailwindcss.com"></script>\
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">\
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">\
+    <style>\
+        body \{\
+            font-family: 'Raleway', sans-serif;\
+            color: #333;\
+        \}\
+        .playfair \{\
+            font-family: 'Playfair Display', serif;\
+        \}\
+        .gold-accent \{\
+            color: #D4AF37;\
+        \}\
+        .gold-border \{\
+            border-color: #D4AF37;\
+        \}\
+        .gold-bg \{\
+            background-color: #D4AF37;\
+        \}\
+        .hover-gold:hover \{\
+            color: #D4AF37;\
+        \}\
+        .project-card:hover .project-overlay \{\
+            opacity: 1;\
+        \}\
+        .project-overlay \{\
+            transition: all 0.3s ease;\
+            background: rgba(0, 0, 0, 0.7);\
+        \}\
+        .testimonial-card \{\
+            transition: all 0.3s ease;\
+        \}\
+        .testimonial-card:hover \{\
+            transform: translateY(-5px);\
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);\
+        \}\
+        /* Modal styles */\
+        .modal \{\
+            display: none;\
+            position: fixed;\
+            top: 0;\
+            left: 0;\
+            width: 100%;\
+            height: 100%;\
+            background-color: rgba(0,0,0,0.9);\
+            z-index: 100;\
+            overflow-y: auto;\
+        \}\
+        .modal-content \{\
+            background: white;\
+            margin: 5% auto;\
+            width: 90%;\
+            max-width: 1000px;\
+            border-radius: 8px;\
+            overflow: hidden;\
+        \}\
+        .close-modal \{\
+            position: absolute;\
+            top: 20px;\
+            right: 20px;\
+            color: white;\
+            font-size: 30px;\
+            cursor: pointer;\
+            z-index: 101;\
+        \}\
+        .project-slider \{\
+            position: relative;\
+            height: 500px;\
+            overflow: hidden;\
+        \}\
+        .project-slide \{\
+            position: absolute;\
+            top: 0;\
+            left: 0;\
+            width: 100%;\
+            height: 100%;\
+            opacity: 0;\
+            transition: opacity 0.5s ease;\
+            background-size: cover;\
+            background-position: center;\
+        \}\
+        .project-slide.active \{\
+            opacity: 1;\
+        \}\
+        .slider-nav \{\
+            position: absolute;\
+            bottom: 20px;\
+            left: 0;\
+            right: 0;\
+            text-align: center;\
+        \}\
+        .slider-dot \{\
+            display: inline-block;\
+            width: 12px;\
+            height: 12px;\
+            border-radius: 50%;\
+            background: rgba(255,255,255,0.5);\
+            margin: 0 5px;\
+            cursor: pointer;\
+        \}\
+        .slider-dot.active \{\
+            background: white;\
+        \}\
+        .slider-arrow \{\
+            position: absolute;\
+            top: 50%;\
+            transform: translateY(-50%);\
+            color: white;\
+            font-size: 30px;\
+            cursor: pointer;\
+            background: rgba(0,0,0,0.5);\
+            width: 50px;\
+            height: 50px;\
+            display: flex;\
+            align-items: center;\
+            justify-content: center;\
+            border-radius: 50%;\
+            z-index: 10;\
+        \}\
+        .slider-arrow.prev \{\
+            left: 20px;\
+        \}\
+        .slider-arrow.next \{\
+            right: 20px;\
+        \}\
+        @media (max-width: 768px) \{\
+            .project-slider \{\
+                height: 300px;\
+            \}\
+            .modal-content \{\
+                margin: 2% auto;\
+                width: 95%;\
+            \}\
+        \}\
+    </style>\
+</head>\
+<body class="bg-white">\
+    <!-- Navbar -->\
+    <nav class="bg-white shadow-sm fixed w-full z-10">\
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">\
+            <div class="flex justify-between h-16">\
+                <div class="flex items-center">\
+                    <span class="playfair text-xl font-semibold gold-accent">Chiara Pastoressa</span>\
+                </div>\
+                <div class="hidden md:flex items-center space-x-8">\
+                    <a href="#about" class="text-gray-700 hover-gold transition">Chi sono</a>\
+                    <a href="#projects" class="text-gray-700 hover-gold transition">Progetti</a>\
+                    <a href="#services" class="text-gray-700 hover-gold transition">Servizi</a>\
+                    <a href="#testimonials" class="text-gray-700 hover-gold transition">Testimonianze</a>\
+                    <a href="#contact" class="text-gray-700 hover-gold transition">Contatti</a>\
+                </div>\
+                <div class="md:hidden flex items-center">\
+                    <button id="menu-btn" class="text-gray-700">\
+                        <i class="fas fa-bars text-xl"></i>\
+                    </button>\
+                </div>\
+            </div>\
+        </div>\
+        <!-- Mobile menu -->\
+        <div id="mobile-menu" class="hidden md:hidden bg-white pb-3 px-4">\
+            <a href="#about" class="block py-2 text-gray-700 hover-gold transition">Chi sono</a>\
+            <a href="#projects" class="block py-2 text-gray-700 hover-gold transition">Progetti</a>\
+            <a href="#services" class="block py-2 text-gray-700 hover-gold transition">Servizi</a>\
+            <a href="#testimonials" class="block py-2 text-gray-700 hover-gold transition">Testimonianze</a>\
+            <a href="#contact" class="block py-2 text-gray-700 hover-gold transition">Contatti</a>\
+        </div>\
+    </nav>\
+\
+    <!-- Hero Section -->\
+    <section class="pt-16 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80'); height: 90vh;">\
+        <div class="h-full flex items-center bg-black bg-opacity-40">\
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center w-full">\
+                <h1 class="playfair text-5xl md:text-7xl font-bold text-white mb-4">Chiara Pastoressa</h1>\
+                <p class="text-xl md:text-2xl text-white mb-8">Architettura e Interior Design su misura</p>\
+                <a href="#contact" class="inline-block px-8 py-3 bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-800 transition duration-300">Parla con me</a>\
+            </div>\
+        </div>\
+    </section>\
+\
+    <!-- About Section -->\
+    <section id="about" class="py-20 bg-gray-50">\
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">\
+            <div class="flex flex-col md:flex-row items-center">\
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">\
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80" alt="Chiara Pastoressa" class="rounded-lg shadow-lg w-full">\
+                </div>\
+                <div class="md:w-1/2">\
+                    <h2 class="playfair text-3xl md:text-4xl font-bold mb-6">La mia filosofia progettuale</h2>\
+                    <p class="text-gray-600 mb-6">Mi chiamo Chiara Pastoressa e sono un'architetta e interior designer con oltre 15 anni di esperienza nel trasformare spazi in luoghi che raccontano storie.</p>\
+                    <p class="text-gray-600 mb-6">Credo che ogni progetto debba essere un riflesso autentico delle persone che lo vivranno, combinando funzionalit\'e0, bellezza e comfort in un equilibrio armonioso.</p>\
+                    <p class="text-gray-600 mb-8">Il mio approccio si basa sull'ascolto attento delle esigenze del cliente, sulla ricerca di soluzioni personalizzate e sull'attenzione maniacale ai dettagli che fanno la differenza.</p>\
+                    <div class="flex items-center">\
+                        <div class="w-12 h-1 gold-bg mr-4"></div>\
+                        <span class="playfair text-lg gold-accent">Chiara Pastoressa</span>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+    </section>\
+\
+    <!-- Projects Section -->\
+    <section id="projects" class="py-20 bg-white">\
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">\
+            <div class="text-center mb-16">\
+                <h2 class="playfair text-3xl md:text-4xl font-bold mb-4">I miei progetti</h2>\
+                <div class="w-20 h-1 gold-bg mx-auto"></div>\
+            </div>\
+            \
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">\
+                <!-- Project 1 -->\
+                <div class="project-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer" onclick="openModal('modal1')">\
+                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Progetto 1" class="w-full h-64 object-cover">\
+                    <div class="project-overlay absolute inset-0 flex flex-col justify-end p-6 opacity-0">\
+                        <h3 class="playfair text-white text-xl font-semibold mb-2">Villa sul lago</h3>\
+                        <p class="text-gray-200">Ristrutturazione completa di una villa storica con vista lago</p>\
+                    </div>\
+                </div>\
+                \
+                <!-- Project 2 -->\
+                <div class="project-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer" onclick="openModal('modal2')">\
+                    <img src="https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Progetto 2" class="w-full h-64 object-cover">\
+                    <div class="project-overlay absolute inset-0 flex flex-col justify-end p-6 opacity-0">\
+                        <h3 class="playfair text-white text-xl font-semibold mb-2">Loft industriale</h3>\
+                        <p class="text-gray-200">Conversione di un ex spazio industriale in loft residenziale</p>\
+                    </div>\
+                </div>\
+                \
+                <!-- Project 3 -->\
+                <div class="project-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer" onclick="openModal('modal3')">\
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80" alt="Progetto 3" class="w-full h-64 object-cover">\
+                    <div class="project-overlay absolute inset-0 flex flex-col justify-end p-6 opacity-0">\
+                        <h3 class="playfair text-white text-xl font-semibold mb-2">Casa minimal</h3>\
+                        <p class="text-gray-200">Design minimalista per una giovane famiglia</p>\
+                    </div>\
+                </div>\
+                \
+                <!-- Project 4 -->\
+                <div class="project-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer" onclick="openModal('modal4')">\
+                    <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1627&q=80" alt="Progetto 4" class="w-full h-64 object-cover">\
+                    <div class="project-overlay absolute inset-0 flex flex-col justify-end p-6 opacity-0">\
+                        <h3 class="playfair text-white text-xl font-semibold mb-2">Ufficio creativo</h3>\
+                        <p class="text-gray-200">Spazio lavorativo ispirante per un'agenzia digitale</p>\
+                    </div>\
+                </div>\
+                \
+                <!-- Project 5 -->\
+                <div class="project-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer" onclick="openModal('modal5')">\
+                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Progetto 5" class="w-full h-64 object-cover">\
+                    <div class="project-overlay absolute inset-0 flex flex-col justify-end p-6 opacity-0">\
+                        <h3 class="playfair text-white text-xl font-semibold mb-2">Appartamento in centro</h3>\
+                        <p class="text-gray-200">Rinnovamento completo di un appartamento nel cuore della citt\'e0</p>\
+                    </div>\
+                </div>\
+                \
+                <!-- Project 6 -->\
+                <div class="project-card relative overflow-hidden rounded-lg shadow-lg cursor-pointer" onclick="openModal('modal6')">\
+                    <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1627&q=80" alt="Progetto 6" class="w-full h-64 object-cover">\
+                    <div class="project-overlay absolute inset-0 flex flex-col justify-end p-6 opacity-0">\
+                        <h3 class="playfair text-white text-xl font-semibold mb-2">Casa vacanze</h3>\
+                        <p class="text-gray-200">Progettazione di una casa vacanze in stile mediterraneo</p>\
+                    </div>\
+                </div>\
+            </div>\
+            \
+            <div class="text-center mt-12">\
+                <a href="#contact" class="inline-block px-8 py-3 bg-gray-800 text-white hover:bg-gray-700 transition duration-300 rounded">Vuoi un progetto simile?</a>\
+            </div>\
+        </div>\
+    </section>\
+\
+    <!-- Project Modals -->\
+    <!-- Modal 1 - Villa sul lago -->\
+    <div id="modal1" class="modal">\
+        <span class="close-modal" onclick="closeModal('modal1')">&times;</span>\
+        <div class="modal-content">\
+            <div class="project-slider">\
+                <!-- Slides -->\
+                <div class="project-slide active" style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1627&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                \
+                <!-- Navigation arrows -->\
+                <div class="slider-arrow prev" onclick="changeSlide('modal1', -1)">&#10094;</div>\
+                <div class="slider-arrow next" onclick="changeSlide('modal1', 1)">&#10095;</div>\
+                \
+                <!-- Dots navigation -->\
+                <div class="slider-nav">\
+                    <span class="slider-dot active" onclick="currentSlide('modal1', 0)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal1', 1)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal1', 2)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal1', 3)"></span>\
+                </div>\
+            </div>\
+            <div class="p-8">\
+                <h2 class="playfair text-3xl font-bold mb-4">Villa sul lago</h2>\
+                <p class="text-gray-600 mb-6">Ristrutturazione completa di una villa storica con vista lago</p>\
+                <p class="text-gray-700">Questo progetto ha coinvolto la completa ristrutturazione di una villa degli anni '30 situata sulle rive del Lago di Como. L'obiettivo era preservare il carattere storico dell'edificio mentre si modernizzavano gli spazi interni per adattarli alle esigenze di una famiglia contemporanea.</p>\
+                <p class="text-gray-700 mt-4">Abbiamo lavorato con materiali naturali come pietra locale e legno di rovere, integrando elementi moderni in modo discreto. La disposizione degli spazi \'e8 stata completamente ripensata per massimizzare le viste sul lago e la luce naturale.</p>\
+                <div class="mt-6">\
+                    <h3 class="playfair text-xl font-semibold mb-2">Dettagli del progetto</h3>\
+                    <ul class="list-disc pl-5 text-gray-600">\
+                        <li>Superficie: 350 m\'b2</li>\
+                        <li>Durata lavori: 8 mesi</li>\
+                        <li>Anno di completamento: 2022</li>\
+                        <li>Materiali principali: Pietra locale, legno di rovere, acciaio</li>\
+                    </ul>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+\
+    <!-- Modal 2 - Loft industriale -->\
+    <div id="modal2" class="modal">\
+        <span class="close-modal" onclick="closeModal('modal2')">&times;</span>\
+        <div class="modal-content">\
+            <div class="project-slider">\
+                <!-- Slides -->\
+                <div class="project-slide active" style="background-image: url('https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1627&q=80');"></div>\
+                \
+                <!-- Navigation arrows -->\
+                <div class="slider-arrow prev" onclick="changeSlide('modal2', -1)">&#10094;</div>\
+                <div class="slider-arrow next" onclick="changeSlide('modal2', 1)">&#10095;</div>\
+                \
+                <!-- Dots navigation -->\
+                <div class="slider-nav">\
+                    <span class="slider-dot active" onclick="currentSlide('modal2', 0)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal2', 1)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal2', 2)"></span>\
+                </div>\
+            </div>\
+            <div class="p-8">\
+                <h2 class="playfair text-3xl font-bold mb-4">Loft industriale</h2>\
+                <p class="text-gray-600 mb-6">Conversione di un ex spazio industriale in loft residenziale</p>\
+                <p class="text-gray-700">Questo progetto ha trasformato un ex magazzino industriale degli anni '50 in un moderno loft residenziale nel cuore di Milano. Abbiamo preservato molti degli elementi industriali originali, come le travi in acciaio a vista e il cemento grezzo, integrandoli con materiali pi\'f9 caldi e accoglienti.</p>\
+                <p class="text-gray-700 mt-4">La sfida principale \'e8 stata creare una divisione degli spazi che mantenesse l'ampia sensazione di open space tipica dei loft, pur garantendo privacy e funzionalit\'e0 per una famiglia con due bambini.</p>\
+                <div class="mt-6">\
+                    <h3 class="playfair text-xl font-semibold mb-2">Dettagli del progetto</h3>\
+                    <ul class="list-disc pl-5 text-gray-600">\
+                        <li>Superficie: 180 m\'b2</li>\
+                        <li>Durata lavori: 6 mesi</li>\
+                        <li>Anno di completamento: 2021</li>\
+                        <li>Materiali principali: Acciaio, cemento, legno di noce</li>\
+                    </ul>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+\
+    <!-- Modal 3 - Casa minimal -->\
+    <div id="modal3" class="modal">\
+        <span class="close-modal" onclick="closeModal('modal3')">&times;</span>\
+        <div class="modal-content">\
+            <div class="project-slider">\
+                <!-- Slides -->\
+                <div class="project-slide active" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1627&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                \
+                <!-- Navigation arrows -->\
+                <div class="slider-arrow prev" onclick="changeSlide('modal3', -1)">&#10094;</div>\
+                <div class="slider-arrow next" onclick="changeSlide('modal3', 1)">&#10095;</div>\
+                \
+                <!-- Dots navigation -->\
+                <div class="slider-nav">\
+                    <span class="slider-dot active" onclick="currentSlide('modal3', 0)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal3', 1)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal3', 2)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal3', 3)"></span>\
+                </div>\
+            </div>\
+            <div class="p-8">\
+                <h2 class="playfair text-3xl font-bold mb-4">Casa minimal</h2>\
+                <p class="text-gray-600 mb-6">Design minimalista per una giovane famiglia</p>\
+                <p class="text-gray-700">Questa casa minimalista \'e8 stata progettata per una giovane coppia con un bambino, che cercava uno spazio tranquillo e ordinato per contrastare il caos della vita cittadina. Il design si concentra su linee pulite, spazi aperti e una palette di colori neutri con tocchi di colore naturale.</p>\
+                <p class="text-gray-700 mt-4">Abbiamo creato soluzioni di storage innovative per mantenere l'aspetto minimalista senza sacrificare la funzionalit\'e0. L'illuminazione \'e8 stata attentamente studiata per creare atmosfere diverse a seconda del momento della giornata e delle necessit\'e0.</p>\
+                <div class="mt-6">\
+                    <h3 class="playfair text-xl font-semibold mb-2">Dettagli del progetto</h3>\
+                    <ul class="list-disc pl-5 text-gray-600">\
+                        <li>Superficie: 120 m\'b2</li>\
+                        <li>Durata lavori: 5 mesi</li>\
+                        <li>Anno di completamento: 2020</li>\
+                        <li>Materiali principali: Legno di quercia, cemento liscio, vetro</li>\
+                    </ul>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+\
+    <!-- Modal 4 - Ufficio creativo -->\
+    <div id="modal4" class="modal">\
+        <span class="close-modal" onclick="closeModal('modal4')">&times;</span>\
+        <div class="modal-content">\
+            <div class="project-slider">\
+                <!-- Slides -->\
+                <div class="project-slide active" style="background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1627&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80');"></div>\
+                \
+                <!-- Navigation arrows -->\
+                <div class="slider-arrow prev" onclick="changeSlide('modal4', -1)">&#10094;</div>\
+                <div class="slider-arrow next" onclick="changeSlide('modal4', 1)">&#10095;</div>\
+                \
+                <!-- Dots navigation -->\
+                <div class="slider-nav">\
+                    <span class="slider-dot active" onclick="currentSlide('modal4', 0)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal4', 1)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal4', 2)"></span>\
+                </div>\
+            </div>\
+            <div class="p-8">\
+                <h2 class="playfair text-3xl font-bold mb-4">Ufficio creativo</h2>\
+                <p class="text-gray-600 mb-6">Spazio lavorativo ispirante per un'agenzia digitale</p>\
+                <p class="text-gray-700">Questo spazio per un'agenzia creativa \'e8 stato progettato per stimolare la creativit\'e0 e la collaborazione tra i team. Abbiamo creato diverse zone di lavoro: aree per il lavoro concentrato, spazi informali per il brainstorming, e zone relax per la ricarica mentale.</p>\
+                <p class="text-gray-700 mt-4">La palette di colori \'e8 vivace ma non invasiva, con tocchi di verde e blu che favoriscono la concentrazione. I materiali scelti sono sostenibili e a basso impatto ambientale, in linea con i valori dell'azienda.</p>\
+                <div class="mt-6">\
+                    <h3 class="playfair text-xl font-semibold mb-2">Dettagli del progetto</h3>\
+                    <ul class="list-disc pl-5 text-gray-600">\
+                        <li>Superficie: 250 m\'b2</li>\
+                        <li>Durata lavori: 3 mesi</li>\
+                        <li>Anno di completamento: 2021</li>\
+                        <li>Materiali principali: Legno riciclato, linoleum, vetro</li>\
+                    </ul>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+\
+    <!-- Modal 5 - Appartamento in centro -->\
+    <div id="modal5" class="modal">\
+        <span class="close-modal" onclick="closeModal('modal5')">&times;</span>\
+        <div class="modal-content">\
+            <div class="project-slider">\
+                <!-- Slides -->\
+                <div class="project-slide active" style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1627&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                \
+                <!-- Navigation arrows -->\
+                <div class="slider-arrow prev" onclick="changeSlide('modal5', -1)">&#10094;</div>\
+                <div class="slider-arrow next" onclick="changeSlide('modal5', 1)">&#10095;</div>\
+                \
+                <!-- Dots navigation -->\
+                <div class="slider-nav">\
+                    <span class="slider-dot active" onclick="currentSlide('modal5', 0)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal5', 1)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal5', 2)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal5', 3)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal5', 4)"></span>\
+                </div>\
+            </div>\
+            <div class="p-8">\
+                <h2 class="playfair text-3xl font-bold mb-4">Appartamento in centro</h2>\
+                <p class="text-gray-600 mb-6">Rinnovamento completo di un appartamento nel cuore della citt\'e0</p>\
+                <p class="text-gray-700">Questo appartamento nel centro storico di Firenze \'e8 stato completamente rinnovato per un cliente che cercava un rifugio elegante in citt\'e0. Abbiamo lavorato con le caratteristiche architettoniche originali dell'edificio, restaurando elementi come i soffitti affrescati e le pavimenti in cotto.</p>\
+                <p class="text-gray-700 mt-4">L'arredamento combina pezzi d'epoca con design contemporaneo, creando un dialogo tra passato e presente. La disposizione degli spazi \'e8 stata ottimizzata per sfruttare al meglio la luce naturale e le viste sulla citt\'e0.</p>\
+                <div class="mt-6">\
+                    <h3 class="playfair text-xl font-semibold mb-2">Dettagli del progetto</h3>\
+                    <ul class="list-disc pl-5 text-gray-600">\
+                        <li>Superficie: 95 m\'b2</li>\
+                        <li>Durata lavori: 4 mesi</li>\
+                        <li>Anno di completamento: 2019</li>\
+                        <li>Materiali principali: Cotto originale, marmo, legno di ciliegio</li>\
+                    </ul>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+\
+    <!-- Modal 6 - Casa vacanze -->\
+    <div id="modal6" class="modal">\
+        <span class="close-modal" onclick="closeModal('modal6')">&times;</span>\
+        <div class="modal-content">\
+            <div class="project-slider">\
+                <!-- Slides -->\
+                <div class="project-slide active" style="background-image: url('https://images.unsplash.com/photo-1618220179428-22790b461013?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1627&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1617806118233-18e1de247200?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80');"></div>\
+                <div class="project-slide" style="background-image: url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80');"></div>\
+                \
+                <!-- Navigation arrows -->\
+                <div class="slider-arrow prev" onclick="changeSlide('modal6', -1)">&#10094;</div>\
+                <div class="slider-arrow next" onclick="changeSlide('modal6', 1)">&#10095;</div>\
+                \
+                <!-- Dots navigation -->\
+                <div class="slider-nav">\
+                    <span class="slider-dot active" onclick="currentSlide('modal6', 0)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal6', 1)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal6', 2)"></span>\
+                    <span class="slider-dot" onclick="currentSlide('modal6', 3)"></span>\
+                </div>\
+            </div>\
+            <div class="p-8">\
+                <h2 class="playfair text-3xl font-bold mb-4">Casa vacanze</h2>\
+                <p class="text-gray-600 mb-6">Progettazione di una casa vacanze in stile mediterraneo</p>\
+                <p class="text-gray-700">Questa casa vacanze in Puglia \'e8 stata progettata per offrire un'esperienza autentica dello stile di vita mediterraneo. Abbiamo utilizzato materiali locali come la pietra leccese e il tufo, combinati con colori caldi e tessuti naturali per creare un'atmosfera accogliente e rilassante.</p>\
+                <p class="text-gray-700 mt-4">Gli spazi esterni sono stati curati con particolare attenzione, con una piscina integrata nel paesaggio e zone living all'aperto che sfruttano il clima favorevole della regione. L'arredamento \'e8 una miscela di pezzi artigianali locali e design contemporaneo.</p>\
+                <div class="mt-6">\
+                    <h3 class="playfair text-xl font-semibold mb-2">Dettagli del progetto</h3>\
+                    <ul class="list-disc pl-5 text-gray-600">\
+                        <li>Superficie: 200 m\'b2</li>\
+                        <li>Durata lavori: 7 mesi</li>\
+                        <li>Anno di completamento: 2021</li>\
+                        <li>Materiali principali: Pietra leccese, tufo, legno di ulivo</li>\
+                    </ul>\
+                </div>\
+            </div>\
+        </div>\
+    </div>\
+\
+    <!-- Services Section -->\
+    <section id="services" class="py-20 bg-gray-50">\
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">\
+            <div class="text-center mb-16">\
+                <h2 class="playfair text-3xl md:text-4xl font-bold mb-4">I miei servizi</h2>\
+                <div class="w-20 h-1 gold-bg mx-auto"></div>\
+            </div>\
+            \
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">\
+                <!-- Service 1 -->\
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">\
+                    <div class="w-16 h-16 gold-bg rounded-full flex items-center justify-center mx-auto mb-6">\
+                        <i class="fas fa-drafting-compass text-white text-2xl"></i>\
+                    </div>\
+                    <h3 class="playfair text-xl font-semibold mb-4">Progettazione Architettonica</h3>\
+                    <p class="text-gray-600">Dalla concezione iniziale alla realizzazione finale, creo spazi architettonici che combinano estetica e funzionalit\'e0.</p>\
+                </div>\
+                \
+                <!-- Service 2 -->\
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">\
+                    <div class="w-16 h-16 gold-bg rounded-full flex items-center justify-center mx-auto mb-6">\
+                        <i class="fas fa-couch text-white text-2xl"></i>\
+                    </div>\
+                    <h3 class="playfair text-xl font-semibold mb-4">Interior Design</h3>\
+                    <p class="text-gray-600">Trasformo gli interni in ambienti armoniosi qui riflettono la personalit\'e0 e le esigenze di chi li vive.</p>\
+                </div>\
+                \
+                <!-- Service 3 -->\
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">\
+                    <div class="w-16 h-16 gold-bg rounded-full flex items-center justify-center mx-auto mb-6">\
+                        <i class="fas fa-hammer text-white text-2xl"></i>\
+                    </div>\
+                    <h3 class="playfair text-xl font-semibold mb-4">Ristrutturazioni</h3>\
+                    <p class="text-gray-600">Rinnovo e valorizzo spazi esistenti, preservandone il carattere e migliorandone comfort ed efficienza.</p>\
+                </div>\
+                \
+                <!-- Service 4 -->\
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">\
+                    <div class="w-16 h-16 gold-bg rounded-full flex items-center justify-center mx-auto mb-6">\
+                        <i class="fas fa-paint-roller text-white text-2xl"></i>\
+                    </div>\
+                    <h3 class="playfair text-xl font-semibold mb-4">Home Styling</h3>\
+                    <p class="text-gray-600">Selezione di arredi, tessuti e accessori per completare e caratterizzare ogni ambiente.</p>\
+                </div>\
+                \
+                <!-- Service 5 -->\
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">\
+                    <div class="w-16 h-16 gold-bg rounded-full flex items-center justify-center mx-auto mb-6">\
+                        <i class="fas fa-lightbulb text-white text-2xl"></i>\
+                    </div>\
+                    <h3 class="playfair text-xl font-semibold mb-4">Consulenze</h3>\
+                    <p class="text-gray-600">Sessioni personalizzate per ricevere consigli su layout, materiali, colori e soluzioni progettuali.</p>\
+                </div>\
+                \
+                <!-- Service 6 -->\
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">\
+                    <div class="w-16 h-16 gold-bg rounded-full flex items-center justify-center mx-auto mb-6">\
+                        <i class="fas fa-building text-white text-2xl"></i>\
+                    </div>\
+                    <h3 class="playfair text-xl font-semibold mb-4">Progettazione Commerciale</h3>\
+                    <p class="text-gray-600">Creazione di spazi commerciali che comunicano l'identit\'e0 del brand e migliorano l'esperienza cliente.</p>\
+                </div>\
+            </div>\
+        </div>\
+    </section>\
+\
+    <!-- Testimonials Section -->\
+    <section id="testimonials" class="py-20 bg-white">\
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">\
+            <div class="text-center mb-16">\
+                <h2 class="playfair text-3xl md:text-4xl font-bold mb-4">Cosa dicono i miei clienti</h2>\
+                <div class="w-20 h-1 gold-bg mx-auto"></div>\
+            </div>\
+            \
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">\
+                <!-- Testimonial 1 -->\
+                <div class="testimonial-card bg-gray-50 p-8 rounded-lg shadow-sm">\
+                    <div class="flex items-center mb-6">\
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">\
+                            <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Client 1" class="w-full h-full object-cover">\
+                        </div>\
+                        <div>\
+                            <h4 class="playfair font-semibold">Elena Rossi</h4>\
+                            <p class="text-sm text-gray-500">Proprietaria di casa</p>\
+                        </div>\
+                    </div>\
+                    <p class="text-gray-600 italic mb-4">"Chiara ha trasformato la nostra casa in un luogo che amiamo profondamente. La sua capacit\'e0 di ascoltare e interpretare i nostri desideri \'e8 stata impressionante."</p>\
+                    <div class="flex gold-accent">\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                    </div>\
+                </div>\
+                \
+                <!-- Testimonial 2 -->\
+                <div class="testimonial-card bg-gray-50 p-8 rounded-lg shadow-sm">\
+                    <div class="flex items-center mb-6">\
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">\
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client 2" class="w-full h-full object-cover">\
+                        </div>\
+                        <div>\
+                            <h4 class="playfair font-semibold">Marco Bianchi</h4>\
+                            <p class="text-sm text-gray-500">CEO, TechStart</p>\
+                        </div>\
+                    </div>\
+                    <p class="text-gray-600 italic mb-4">"L'ufficio che Chiara ha progettato per la nostra azienda \'e8 perfetto: funzionale, elegante e che comunica esattamente i valori del nostro brand. Un vero professionista."</p>\
+                    <div class="flex gold-accent">\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                    </div>\
+                </div>\
+                \
+                <!-- Testimonial 3 -->\
+                <div class="testimonial-card bg-gray-50 p-8 rounded-lg shadow-sm">\
+                    <div class="flex items-center mb-6">\
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">\
+                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Client 3" class="w-full h-full object-cover">\
+                        </div>\
+                        <div>\
+                            <h4 class="playfair font-semibold">Sofia Verdi</h4>\
+                            <p class="text-sm text-gray-500">Proprietaria di B&B</p>\
+                        </div>\
+                    </div>\
+                    <p class="text-gray-600 italic mb-4">"Grazie a Chiara, il nostro B&B ha raddoppiato le prenotazioni. I suoi interni sono cos\'ec accoglienti che i clienti tornano solo per l'atmosfera che ha creato."</p>\
+                    <div class="flex gold-accent">\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                        <i class="fas fa-star"></i>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+    </section>\
+\
+    <!-- Contact Section -->\
+    <section id="contact" class="py-20 bg-gray-50">\
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">\
+            <div class="flex flex-col lg:flex-row">\
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">\
+                    <h2 class="playfair text-3xl md:text-4xl font-bold mb-6">Contattami</h2>\
+                    <p class="text-gray-600 mb-8">Se hai un progetto in mente o vuoi semplicemente saperne di pi\'f9 sul mio lavoro, sar\'f2 felice di ascoltarti e trovare insieme la soluzione migliore per le tue esigenze.</p>\
+                    \
+                    <div class="mb-8">\
+                        <h3 class="playfair text-xl font-semibold mb-4">Informazioni di contatto</h3>\
+                        <div class="flex items-start mb-4">\
+                            <i class="fas fa-envelope gold-accent mt-1 mr-4"></i>\
+                            <span>info@chiarapastoressa.com</span>\
+                        </div>\
+                        <div class="flex items-start mb-4">\
+                            <i class="fas fa-phone gold-accent mt-1 mr-4"></i>\
+                            <span>+39 123 456 7890</span>\
+                        </div>\
+                        <div class="flex items-start">\
+                            <i class="fas fa-map-marker-alt gold-accent mt-1 mr-4"></i>\
+                            <span>Milano, Italia</span>\
+                        </div>\
+                    </div>\
+                    \
+                    <div>\
+                        <h3 class="playfair text-xl font-semibold mb-4">Seguimi</h3>\
+                        <div class="flex space-x-4">\
+                            <a href="#" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition">\
+                                <i class="fab fa-instagram gold-accent"></i>\
+                            </a>\
+                            <a href="#" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition">\
+                                <i class="fab fa-linkedin-in gold-accent"></i>\
+                            </a>\
+                            <a href="#" class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition">\
+                                <i class="fab fa-pinterest-p gold-accent"></i>\
+                            </a>\
+                        </div>\
+                    </div>\
+                </div>\
+                \
+                <div class="lg:w-1/2">\
+                    <form class="bg-white p-8 rounded-lg shadow-md">\
+                        <div class="mb-6">\
+                            <label for="name" class="block text-gray-700 mb-2">Nome e Cognome</label>\
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-400">\
+                        </div>\
+                        <div class="mb-6">\
+                            <label for="email" class="block text-gray-700 mb-2">Email</label>\
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-400">\
+                        </div>\
+                        <div class="mb-6">\
+                            <label for="message" class="block text-gray-700 mb-2">Messaggio</label>\
+                            <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-400"></textarea>\
+                        </div>\
+                        <button type="submit" class="w-full bg-gray-800 text-white py-3 px-6 rounded hover:bg-gray-700 transition duration-300">Invia messaggio</button>\
+                    </form>\
+                </div>\
+            </div>\
+        </div>\
+    </section>\
+\
+    <!-- Footer -->\
+    <footer class="bg-gray-900 text-white py-12">\
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">\
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">\
+                <div class="md:col-span-2">\
+                    <h3 class="playfair text-xl font-semibold gold-accent mb-4">Chiara Pastoressa</h3>\
+                    <p class="text-gray-400">Architettura e Interior Design su misura per creare spazi che raccontano storie.</p>\
+                </div>\
+                <div>\
+                    <h4 class="playfair text-lg font-semibold mb-4">Link veloci</h4>\
+                    <ul class="space-y-2">\
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition">Chi sono</a></li>\
+                        <li><a href="#projects" class="text-gray-400 hover:text-white transition">Progetti</a></li>\
+                        <li><a href="#services" class="text-gray-400 hover:text-white transition">Servizi</a></li>\
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contatti</a></li>\
+                    </ul>\
+                </div>\
+                <div>\
+                    <h4 class="playfair text-lg font-semibold mb-4">Contatti</h4>\
+                    <ul class="space-y-2">\
+                        <li class="flex items-center">\
+                            <i class="fas fa-envelope gold-accent mr-2"></i>\
+                            <span class="text-gray-400">info@chiarapastoressa.com</span>\
+                        </li>\
+                        <li class="flex items-center">\
+                            <i class="fas fa-phone gold-accent mr-2"></i>\
+                            <span class="text-gray-400">+39 123 456 7890</span>\
+                        </li>\
+                        <li class="flex items-center">\
+                            <i class="fas fa-map-marker-alt gold-accent mr-2"></i>\
+                            <span class="text-gray-400">Milano, Italia</span>\
+                        </li>\
+                    </ul>\
+                </div>\
+            </div>\
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">\
+                <p class="text-gray-400 mb-4 md:mb-0">\'a9 2023 Chiara Pastoressa. Tutti i diritti riservati.</p>\
+                <div class="flex space-x-6">\
+                    <a href="#" class="text-gray-400 hover:text-white transition">\
+                        <i class="fab fa-instagram"></i>\
+                    </a>\
+                    <a href="#" class="text-gray-400 hover:text-white transition">\
+                        <i class="fab fa-linkedin-in"></i>\
+                    </a>\
+                    <a href="#" class="text-gray-400 hover:text-white transition">\
+                        <i class="fab fa-pinterest-p"></i>\
+                    </a>\
+                </div>\
+            </div>\
+        </div>\
+    </footer>\
+\
+    <script>\
+        // Mobile menu toggle\
+        const menuBtn = document.getElementById('menu-btn');\
+        const mobileMenu = document.getElementById('mobile-menu');\
+        \
+        menuBtn.addEventListener('click', () => \{\
+            mobileMenu.classList.toggle('hidden');\
+        \});\
+        \
+        // Smooth scrolling for anchor links\
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => \{\
+            anchor.addEventListener('click', function (e) \{\
+                e.preventDefault();\
+                \
+                const targetId = this.getAttribute('href');\
+                if (targetId === '#') return;\
+                \
+                const targetElement = document.querySelector(targetId);\
+                if (targetElement) \{\
+                    window.scrollTo(\{\
+                        top: targetElement.offsetTop - 80,\
+                        behavior: 'smooth'\
+                    \});\
+                    \
+                    // Close mobile menu if open\
+                    if (!mobileMenu.classList.contains('hidden')) \{\
+                        mobileMenu.classList.add('hidden');\
+                    \}\
+                \}\
+            \});\
+        \});\
+\
+        // Modal functions\
+        function openModal(modalId) \{\
+            document.getElementById(modalId).style.display = 'block';\
+            document.body.style.overflow = 'hidden';\
+        \}\
+\
+        function closeModal(modalId) \{\
+            document.getElementById(modalId).style.display = 'none';\
+            document.body.style.overflow = 'auto';\
+        \}\
+\
+        // Close modal when clicking outside of it\
+        window.onclick = function(event) \{\
+            if (event.target.className === 'modal') \{\
+                event.target.style.display = 'none';\
+                document.body.style.overflow = 'auto';\
+            \}\
+        \}\
+\
+        // Slider functions\
+        function changeSlide(modalId, n) \{\
+            const modal = document.getElementById(modalId);\
+            let slides = modal.getElementsByClassName('project-slide');\
+            let dots = modal.getElementsByClassName('slider-dot');\
+            let current = 0;\
+            \
+            // Find current slide\
+            for (let i = 0; i < slides.length; i++) \{\
+                if (slides[i].classList.contains('active')) \{\
+                    current = i;\
+                    break;\
+                \}\
+            \}\
+            \
+            // Calculate new slide index\
+            let newIndex = current + n;\
+            \
+            // Handle wrap-around\
+            if (newIndex >= slides.length) \{\
+                newIndex = 0;\
+            \} else if (newIndex < 0) \{\
+                newIndex = slides.length - 1;\
+            \}\
+            \
+            // Update slides and dots\
+            slides[current].classList.remove('active');\
+            dots[current].classList.remove('active');\
+            slides[newIndex].classList.add('active');\
+            dots[newIndex].classList.add('active');\
+        \}\
+\
+        function currentSlide(modalId, n) \{\
+            const modal = document.getElementById(modalId);\
+            let slides = modal.getElementsByClassName('project-slide');\
+            let dots = modal.getElementsByClassName('slider-dot');\
+            \
+            // Remove active class from all slides and dots\
+            for (let i = 0; i < slides.length; i++) \{\
+                slides[i].classList.remove('active');\
+                dots[i].classList.remove('active');\
+            \}\
+            \
+            // Add active class to selected slide and dot\
+            slides[n].classList.add('active');\
+            dots[n].classList.add('active');\
+        \}\
+    </script>\
+</body>\
+</html>\
+}
